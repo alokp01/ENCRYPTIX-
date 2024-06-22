@@ -1,101 +1,145 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-//Tic Tac Toe Game!
-static void printBoard(string board[3][3]){
-    for(int i = 0; i< 3; i++){
-        for(int j = 0; j< 3; j++){
-            cout << " | " + board[j][i] + " |";
-        }
-        cout << "\n";
-    }
-}
-static void playGame(string board[3][3], string choice, int box){
-    switch(box){
-        case 1: board[0][0] = choice;
-        break;
-        case 2: board[1][0] = choice;
-        break;
-        case 3: board[2][0] = choice;
-        break;
-        case 4: board[0][1] = choice;
-        break;
-        case 5: board[1][1] = choice;
-        break;
-        case 6: board[2][1] = choice;
-        break;
-        case 7: board[0][2] = choice;
-        break;
-        case 8: board[1][2] = choice;
-        break;
-        case 9: board[2][2] = choice;
-        break;
-    }
-}
-static bool winner(string board[3][3]){
-        if (board[0][0] == board[0][1] && board[0][1] == board[0][2]) {
-            return true;
-        } else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != "") {
-            return true;
-        } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != "") {
-            return true;
-        } else if (board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != "") {
-            return true;
-        } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != "") {
-            return true;
-        } else if (board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != "") {
-            return true;
-        } else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != "") {
-            return true;
-        } else if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != "") {
-            return true;
-        }
-    return false;
+char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
 
-}
-int main() {
-    string board[3][3];
-    string choice;
-    string choice2;
-    int turn = 0;
-    int box;
-    cout << "Lets play Tic Tac Toe! \n" << "Which letter do you want to use?\n" << "Type 'X' for X and 'O' for O:" << endl;
-    cin >> choice;
-    while(choice != "X" && choice != "O"){
-        cout << "Your choice was invalid. Please enter X or O"<< endl;
+int checkwin();
+void board();
+
+int main()
+{
+	int player = 1,i,choice;
+
+    char mark;
+    do
+    {
+        board();
+        player=(player%2)?1:2;
+
+        cout << "Player " << player << ", enter a number:  ";
         cin >> choice;
-    }
-    if(choice == "X") {
-        cout << "Player 2 will be O" << endl;
-        choice2 = "O";
-    }else if(choice == "O"){
-        cout << "Player 2 will be X" << endl;
-        choice2 = "X";
-    }
 
-    while(turn < 5) {
-        cout << "Player 1. Please state the number of the box you would like to place the " + choice + " in." << endl;
-        printBoard(board);
-        cin >> box;
-        playGame(board, choice, box);
-        if(winner(board)){
-            cout << "Congrats! We have a winner!" << endl;
-            printBoard(board);
-            return 0;
-        }
-        cout << "Player 2. Please state the number of the box you would like to place the " + choice2 + " in." << endl;
-        printBoard(board);
-        cin >> box;
-        playGame(board, choice2, box);
-        if(winner(board)){
-            cout << "Congrats! We have a winner!" << endl;
-            printBoard(board);
-            return 0;
-        }
-        turn++;
+        mark=(player == 1) ? 'X' : 'O';
 
-    }
-    cout << "Tie Game!" << endl;
+        if (choice == 1 && square[1] == '1')
+
+            square[1] = mark;
+        else if (choice == 2 && square[2] == '2')
+
+            square[2] = mark;
+        else if (choice == 3 && square[3] == '3')
+
+            square[3] = mark;
+        else if (choice == 4 && square[4] == '4')
+
+            square[4] = mark;
+        else if (choice == 5 && square[5] == '5')
+
+            square[5] = mark;
+        else if (choice == 6 && square[6] == '6')
+
+            square[6] = mark;
+        else if (choice == 7 && square[7] == '7')
+
+            square[7] = mark;
+        else if (choice == 8 && square[8] == '8')
+
+            square[8] = mark;
+        else if (choice == 9 && square[9] == '9')
+
+            square[9] = mark;
+        else
+        {
+            cout<<"Invalid move ";
+
+            player--;
+            cin.ignore();
+            cin.get();
+        }
+        i=checkwin();
+
+        player++;
+    }while(i==-1);
+    board();
+    if(i==1)
+
+        cout<<"==>\aPlayer "<<--player<<" win ";
+    else
+        cout<<"==>\aGame draw";
+
+    cin.ignore();
+    cin.get();
     return 0;
+}
+
+/*********************************************
+    FUNCTION TO RETURN GAME STATUS
+    1 FOR GAME IS OVER WITH RESULT
+    -1 FOR GAME IS IN PROGRESS
+    O GAME IS OVER AND NO RESULT
+**********************************************/
+
+int checkwin()
+{
+    if (square[1] == square[2] && square[2] == square[3])
+
+        return 1;
+    else if (square[4] == square[5] && square[5] == square[6])
+
+        return 1;
+    else if (square[7] == square[8] && square[8] == square[9])
+
+        return 1;
+    else if (square[1] == square[4] && square[4] == square[7])
+
+        return 1;
+    else if (square[2] == square[5] && square[5] == square[8])
+
+        return 1;
+    else if (square[3] == square[6] && square[6] == square[9])
+
+        return 1;
+    else if (square[1] == square[5] && square[5] == square[9])
+
+        return 1;
+    else if (square[3] == square[5] && square[5] == square[7])
+
+        return 1;
+    else if (square[1] != '1' && square[2] != '2' && square[3] != '3' 
+                    && square[4] != '4' && square[5] != '5' && square[6] != '6' 
+                  && square[7] != '7' && square[8] != '8' && square[9] != '9')
+
+        return 0;
+    else
+        return -1;
+}
+
+
+/*******************************************************************
+     FUNCTION TO DRAW BOARD OF TIC TAC TOE WITH PLAYERS MARK
+********************************************************************/
+
+
+void board()
+{
+    system("cls");
+    cout << "\n\n\tTic Tac Toe\n\n";
+
+    cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
+    cout << endl;
+
+    cout << "     |     |     " << endl;
+    cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
+
+    cout << "||_" << endl;
+    cout << "     |     |     " << endl;
+
+    cout << "  " << square[4] << "  |  " << square[5] << "  |  " << square[6] << endl;
+
+    cout << "||_" << endl;
+    cout << "     |     |     " << endl;
+
+    cout << "  " << square[7] << "  |  " << square[8] << "  |  " << square[9] << endl;
+
+    cout << "     |     |     " << endl << endl;
 }
